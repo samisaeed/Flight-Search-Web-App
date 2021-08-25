@@ -1,0 +1,15 @@
+table {
+  width: 100%;
+}
+
+.no-table-data-found {
+  margin-top: 50px;
+}
+no-table-data-found__img {
+   width: 30%;
+ }
+
+no-table-data-found__text{
+   text-align: center;
+   font-weight: bold;
+ }

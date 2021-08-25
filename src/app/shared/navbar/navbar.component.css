@@ -1,0 +1,15 @@
+.toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background-color: #3f51b5;
+  color: white;
+  font-weight: 600;
+}
+.spacer {
+  margin-left: 5rem;
+}

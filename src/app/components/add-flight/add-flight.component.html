@@ -1,0 +1,53 @@
+<mat-card class="card">
+  <h2 class="title">Add Flight Details</h2>
+    <form [formGroup]="form"  fxLayout="column" fxLayoutAlign="start">
+
+      <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+        <mat-form-field appearance="outline" fxFlex="100">
+          <mat-label>ArrivalAirport Code</mat-label>
+          <input  matInput formControlName="ArrivalAirportCode" required>
+          <mat-error *ngIf="hasError('ArrivalAirportCode', 'required')">ArrivalAirport Code is required</mat-error>
+          <mat-error *ngIf="hasError('ArrivalAirportCode', 'minlength')">Minimum Three Character string. Characters can be any alphanumeric</mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+        <mat-form-field appearance="outline" fxFlex="100">
+          <mat-label>DepartureAirport Code</mat-label>
+          <input  matInput formControlName="DepartureAirportCode" required>
+          <mat-error *ngIf="hasError('DepartureAirportCode', 'required')">DepartureAirport Code is required</mat-error>
+          <mat-error *ngIf="DepartureAirportCodeControl.errors?.minlength">Minimum Three Character string. Characters can be any alphanumeric</mat-error>
+        </mat-form-field>
+
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+        <mat-form-field appearance="outline" fxFlex="100">
+          <mat-label>Departure Date</mat-label>
+          <input matInput [matDatepicker]="picker" (click)="picker.open()" formControlName="DepartureDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error>Departure Date is required</mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+        <mat-form-field appearance="outline" fxFlex="100">
+          <mat-label>Return Date </mat-label>
+          <input matInput [matDatepicker]="picker2"  (click)="picker2.open()" formControlName="ReturnDate">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+          <mat-error>Return Date is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="btn_section">
+        <button class="save_btn" mat-raised-button color="primary" (click)="onSaveFlightClick()">
+          Save Flight
+        </button>
+      </div>
+    </form>
+
+</mat-card>
