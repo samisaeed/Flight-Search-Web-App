@@ -9,6 +9,7 @@
           <input  matInput formControlName="ArrivalAirportCode" required>
           <mat-error *ngIf="hasError('ArrivalAirportCode', 'required')">ArrivalAirport Code is required</mat-error>
           <mat-error *ngIf="hasError('ArrivalAirportCode', 'minlength')">Minimum Three Character string. Characters can be any alphanumeric</mat-error>
+          <mat-error *ngIf="hasError('ArrivalAirportCode', 'maxlength')">Maximum Three Character string. Characters can be any alphanumeric</mat-error>
         </mat-form-field>
       </div>
       <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
@@ -18,6 +19,7 @@
           <input  matInput formControlName="DepartureAirportCode" required>
           <mat-error *ngIf="hasError('DepartureAirportCode', 'required')">DepartureAirport Code is required</mat-error>
           <mat-error *ngIf="DepartureAirportCodeControl.errors?.minlength">Minimum Three Character string. Characters can be any alphanumeric</mat-error>
+          <mat-error *ngIf="DepartureAirportCodeControl.errors?.maxlength">Maximum Three Character string. Characters can be any alphanumeric</mat-error>
         </mat-form-field>
 
       </div>
@@ -44,7 +46,7 @@
       </div>
 
       <div class="btn_section">
-        <button class="save_btn" mat-raised-button color="primary" (click)="onSaveFlightClick()">
+        <button [disabled]="form.invalid" class="save_btn" mat-raised-button color="primary" (click)="onSaveFlightClick()">
           Save Flight
         </button>
       </div>

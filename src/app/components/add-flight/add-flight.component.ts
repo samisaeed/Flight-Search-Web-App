@@ -21,8 +21,8 @@ export class AddFlightComponent implements OnInit {
 
   setFormConfig(): void {
     this.form = this._fb.group({
-      DepartureAirportCode: ['', [Validators.required, Validators.minLength(3)]],
-      ArrivalAirportCode: ['', [Validators.required, Validators.minLength(3)]],
+      DepartureAirportCode: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(3)]],
+      ArrivalAirportCode: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(3)]],
       DepartureDate: [''],
       ReturnDate: [''],
     });
