@@ -24,15 +24,17 @@ export class FlightComponent implements OnInit, OnDestroy {
   allFlightsForSearch = [];
   formatValue;
   isShowTableState = false;
+  isLoading : boolean;
   public addButtonClick$ = new BehaviorSubject(false);
   SearchController = new FormControl();
   title = 'Welcome to flight';
   storeFlight: Observable<Flight[]>;
+  // formatValue;
   constructor(private _dataTableService: DataTableService,
               private store: Store<AppState>,
               private _flightService: FlightService) {
+     // get flight data from store
     // this.storeFlight = store.select('flight');
-    // console.log(this.storeFlight);
   }
 
   ngOnInit() {
@@ -85,7 +87,6 @@ export class FlightComponent implements OnInit, OnDestroy {
           pageSize: reloadEvent ? reloadEvent.page.pageSize : 10,
           pageNumber: reloadEvent ? reloadEvent.page.pageNumber : 0
         };
-
         this.formatValue = this.allFlights?.slice(10 * pagination.pageNumber, (10 * pagination.pageNumber) + pagination.pageSize);
         this._dataTableService.setTableData({data: this.allFlights, totalCount: this.allFlights.length});
       }
@@ -94,15 +95,19 @@ export class FlightComponent implements OnInit, OnDestroy {
   }
 
   getAllFlightsData(): void {
+    this.isLoading = true;
     this._flightService.getAllFlightData()
       .pipe(takeUntil(this._unsubscribeAll$))
       .subscribe(response => {
+        this.isLoading = false;
+        // dispatch flight data
         // this.store.dispatch(new FlightActions.AddFlight(response) )
-        // console.log(this.storeFlight);
         this.allFlights = response;
         this.allFlightsForSearch = response;
-        const formatValue = this.allFlights.slice(0, 10);
-        this._dataTableService.setTableData({data: formatValue, totalCount: this.allFlights.length});
+        this.formatValue = this.allFlights.slice(0, 10);
+        this._dataTableService.setTableData({data: this.formatValue, totalCount: this.allFlights.length});
+      }, error => {
+        this.isLoading = false;
       });
   }
 
@@ -121,7 +126,16 @@ export class FlightComponent implements OnInit, OnDestroy {
   }
 
   onSaveFlightData(data): void {
-    console.log(data);
+    const body = {
+      AirlineLogoAddress: "http://nmflightapi.azurewebsites.net/Images/AirlineLogo/MultiAirline.gif",
+      AirlineName: data.ArrivalAirportCode + data.DepartureAirportCode,
+      InboundFlightsDuration: '23:10',
+      ItineraryId: Math.floor(Math.random() * 1),
+      OutboundFlightsDuration: '28:22',
+      Stops: 2,
+      TotalAmount: '105:22'
+    }
+    this.formatValue.unshift(body);
     this.addButtonClick$.next(false);
   }
 
@@ -135,10 +149,10 @@ export class FlightComponent implements OnInit, OnDestroy {
           this.getAllFlightsData();
           return;
         }
-        const filterValue = this.allFlightsForSearch.filter(response => response.AirlineName.toLowerCase().match(value.toLowerCase()));
-        this.allFlights = filterValue;
-        const formatValue = filterValue.slice(0, 10);
-        this._dataTableService.setTableData({data: formatValue, totalCount: filterValue.length});
+        this.formatValue = this.allFlightsForSearch.filter(response => response.AirlineName.toLowerCase().match(value.toLowerCase()));
+        this.allFlights = this.formatValue;
+        const formatValue = this.formatValue.slice(0, 10);
+        this._dataTableService.setTableData({data: formatValue, totalCount: this.formatValue.length});
       });
   }
 

@@ -2,6 +2,11 @@
 <div class="content" role="main">
 
   <div fxLayout="column" fxFlex="true">
+<!--    spinner-->
+    <div class="loading_spinner" *ngIf="isLoading">
+      <mat-spinner color="primary"></mat-spinner>
+    </div>
+<!--    spinner end-->
     <div fxLayout="row" fxLayoutAlign="space-between center">
 
 
