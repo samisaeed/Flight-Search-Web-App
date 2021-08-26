@@ -9,6 +9,7 @@ import {Flight} from "../../store/models/flight.model";
 import {AppState} from "../../app.state";
 import {Store} from "@ngrx/store";
 import * as FlightActions from './../../store/actions/flight.action';
+import {SnackbarComponent} from "../../shared/snackbar/snackbar.component";
 
 @Component({
   selector: 'app-flight',
@@ -24,16 +25,18 @@ export class FlightComponent implements OnInit, OnDestroy {
   allFlightsForSearch = [];
   formatValue;
   isShowTableState = false;
-  isLoading : boolean;
+  isLoading: boolean;
   public addButtonClick$ = new BehaviorSubject(false);
   SearchController = new FormControl();
   title = 'Welcome to flight';
   storeFlight: Observable<Flight[]>;
+
   // formatValue;
   constructor(private _dataTableService: DataTableService,
               private store: Store<AppState>,
-              private _flightService: FlightService) {
-     // get flight data from store
+              private _flightService: FlightService,
+              private _snackbarService: SnackbarComponent) {
+    // get flight data from store
     // this.storeFlight = store.select('flight');
   }
 
@@ -96,7 +99,7 @@ export class FlightComponent implements OnInit, OnDestroy {
 
   getAllFlightsData(): void {
     this.isLoading = true;
-    this._flightService.getAllFlightData()
+    this._flightService.getAll()
       .pipe(takeUntil(this._unsubscribeAll$))
       .subscribe(response => {
         this.isLoading = false;
@@ -126,17 +129,32 @@ export class FlightComponent implements OnInit, OnDestroy {
   }
 
   onSaveFlightData(data): void {
-    const body = {
-      AirlineLogoAddress: "http://nmflightapi.azurewebsites.net/Images/AirlineLogo/MultiAirline.gif",
-      AirlineName: data.ArrivalAirportCode + data.DepartureAirportCode,
-      InboundFlightsDuration: '23:10',
-      ItineraryId: Math.floor(Math.random() * 1),
-      OutboundFlightsDuration: '28:22',
-      Stops: 2,
-      TotalAmount: '105:22'
-    }
-    this.formatValue.unshift(body);
+    // const body = {
+    //   AirlineLogoAddress: "http://nmflightapi.azurewebsites.net/Images/AirlineLogo/MultiAirline.gif",
+    //   AirlineName: data.ArrivalAirportCode + data.DepartureAirportCode,
+    //   InboundFlightsDuration: '23:10',
+    //   ItineraryId: Math.floor(Math.random() * 1),
+    //   OutboundFlightsDuration: '28:22',
+    //   Stops: 2,
+    //   TotalAmount: '105:22'
+    // }
+    // this.formatValue.unshift(body);
+    this.sendFlightRequest(data);
     this.addButtonClick$.next(false);
+
+  }
+
+  sendFlightRequest(data): void {
+    this.isLoading = true;
+    this._flightService.create(data)
+      .pipe(takeUntil(this._unsubscribeAll$))
+      .subscribe(res => {
+        this.isLoading = false;
+        // this.formatValue.unshift(res);
+    }, error => {
+        this.isLoading = false;
+      this._snackbarService.openSnackBar(error.error.Message);
+    });
   }
 
   async searchFlight(): Promise<void> {

@@ -17,6 +17,8 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import {AddFlightComponent} from "./add-flight/add-flight.component";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {SnackbarComponent} from "../../shared/snackbar/snackbar.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 const routes: Routes = [
   {
@@ -48,6 +50,6 @@ const routes: Routes = [
     MatNativeDateModule,
     MatProgressSpinnerModule
   ],
-  providers: [FlightService],
+  providers: [FlightService, SnackbarComponent, MatSnackBar],
 })
 export class FlightModule { }

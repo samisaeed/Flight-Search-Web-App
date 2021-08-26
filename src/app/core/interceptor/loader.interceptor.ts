@@ -8,9 +8,7 @@ import {LoaderService} from "../../shared/services/loader/loader.service";
 export class LoaderInterceptor implements HttpInterceptor {
   constructor(public loaderService: LoaderService) { console.log(2); }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log(req);
     this.loaderService.show();
-    console.log(2);
     return next.handle(req).pipe(
       finalize(() => this.loaderService.hide())
     );
