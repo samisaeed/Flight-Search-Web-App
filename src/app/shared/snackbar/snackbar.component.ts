@@ -18,7 +18,7 @@ export class SnackbarComponent implements OnInit {
       duration: 5000,
       panelClass: 'success-dialog',
       horizontalPosition: 'end',
-      verticalPosition: 'bottom',
+      verticalPosition: 'top',
     });
   }
 }
