@@ -1,0 +1,7 @@
+{
+  "/api/*": {
+    "target": "http://nmflightapi.azurewebsites.net/api/flight",
+    "secure": false,
+    "logLevel": "debug"
+  }
+}
